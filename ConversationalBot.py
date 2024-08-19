@@ -21,17 +21,10 @@ model = genai.GenerativeModel(
     generation_config=generation_config,
 )
 
-# Initialize session state variables
-if 'history' not in st.session_state:
-    st.session_state['history'] = []  # Store chat history
-
-if 'user_input' not in st.session_state:
-    st.session_state['user_input'] = ""  # Store current user input
-
 # Define the chatbot function
 def ai_chatbot(prompt):
     chat_session = model.start_chat(
-        history=st.session_state['history'] + [
+        history=[
             {
                 "role": "user",
                 "parts": [prompt],
@@ -58,6 +51,13 @@ def handle_input():
         })
         st.session_state.user_input = ""  # Clear input field after submission
 
+# Initialize session state variables
+if 'history' not in st.session_state:
+    st.session_state['history'] = []  # Store chat history
+
+if 'user_input' not in st.session_state:
+    st.session_state['user_input'] = ""  # Store current user input
+
 # Streamlit app interface
 st.title("AI Chatbot")
 
@@ -66,8 +66,7 @@ st.text_input("You: ", key='user_input', on_change=handle_input)
 
 # Display chat history
 if st.session_state['history']:
-    for i in range(len(st.session_state['history']) - 1, -1, -1):
-        message = st.session_state['history'][i]
+    for message in st.session_state['history']:
         if message["role"] == "ai":
             st.write(f"Chatbot: {message['parts'][0]}")
         else:
