@@ -1,7 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
 from google.generativeai.types import StopCandidateException
-import os
 
 # Retrieve the API key from Streamlit secrets
 api_key = st.secrets["api_key"]
