@@ -21,7 +21,6 @@ model = genai.GenerativeModel(
     generation_config=generation_config,
 )
 
-# Define the chatbot function
 def ai_chatbot(prompt):
     chat_session = model.start_chat(
         history=[
@@ -35,21 +34,11 @@ def ai_chatbot(prompt):
         response = chat_session.send_message(prompt)
         return response.text.strip()
     except StopCandidateException:
+        # Handle the StopCandidateException
         return "I'm sorry, I seem to be repeating myself. Could you try rephrasing your question?"
 
-# Handle user input
-def handle_input():
-    if st.session_state.user_input:
-        response = ai_chatbot(st.session_state.user_input)
-        st.session_state.history.append({
-            "role": "user",
-            "parts": [st.session_state.user_input]
-        })
-        st.session_state.history.append({
-            "role": "ai",
-            "parts": [response]
-        })
-        st.session_state.user_input = ""  # Clear input field after submission
+# Streamlit app interface
+st.title("AI Chatbot")
 
 # Initialize session state variables
 if 'history' not in st.session_state:
@@ -58,19 +47,30 @@ if 'history' not in st.session_state:
 if 'user_input' not in st.session_state:
     st.session_state['user_input'] = ""  # Store current user input
 
-# Streamlit app interface
-st.title("AI Chatbot")
+# Handle user input
+def handle_input():
+    if st.session_state.user_input:
+        response = ai_chatbot(st.session_state.user_input)
+        st.session_state.history.append({
+            "role": "user",
+            "message": st.session_state.user_input
+        })
+        st.session_state.history.append({
+            "role": "ai",
+            "message": response
+        })
+        st.session_state.user_input = ""  # Clear input field after submission
 
 # User input
 st.text_input("You: ", key='user_input', on_change=handle_input)
 
 # Display chat history
 if st.session_state['history']:
-    for message in st.session_state['history']:
+    for message in reversed(st.session_state['history']):
         if message["role"] == "ai":
-            st.write(f"Chatbot: {message['parts'][0]}")
+            st.write(f"Chatbot: {message['message']}")
         else:
-            st.write(f"You: {message['parts'][0]}")
+            st.write(f"You: {message['message']}")
 
 # End conversation button
 if st.button("End Conversation"):
