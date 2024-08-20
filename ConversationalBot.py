@@ -1,6 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 from google.generativeai.types import StopCandidateException
+import emoji
 
 # Retrieve the API key from Streamlit secrets
 api_key = st.secrets["api_key"]
@@ -68,9 +69,9 @@ st.text_input("You: ", key='user_input', on_change=handle_input)
 if st.session_state['history']:
     for message in reversed(st.session_state['history']):
         if message["role"] == "ai":
-            st.write(f"Chatbot: {message['message']}")
+            st.markdown(f"<div style='text-align: left;'>🤖 {message['message']}</div>", unsafe_allow_html=True)
         else:
-            st.write(f"You: {message['message']}")
+            st.markdown(f"<div style='text-align: right;'>{message['message']} 😎</div>", unsafe_allow_html=True)
 
 # End conversation button
 if st.button("End Conversation"):
