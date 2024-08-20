@@ -6,7 +6,7 @@
 [![API](https://img.shields.io/badge/API-Google%20Gemini%20API-0000FF)](https://ai.google.dev/)
 
 ## Web-Server
-This repo contains the source code for the *AI Chatbot* web server, developed and deployed using Streamlit, which can be accessed on [![Web-Server](https://img.shields.io/badge/WebServer-Streamlit-808080)](https://your-streamlit-app-link-here)
+This repo contains the source code for the *AI Chatbot* web server, developed and deployed using Streamlit, which can be accessed on [![Web-Server](https://img.shields.io/badge/WebServer-Streamlit-808080)](https://conversationalchatbot-hwjb7ohnrqjx9f6qdbqwcu.streamlit.app/)
 
 ## How To Use the Web-Server
 1) Open the web server using the above link.
